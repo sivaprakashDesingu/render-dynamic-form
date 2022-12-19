@@ -8,11 +8,12 @@ interface Props {
   config:FormFieldInterface[],
   onFormFieldChange:Function,
   formValue:any,
-  cols?:any
+  cols?:any,
+  optionList:any
 }
 
 const RenderDinamicForm = (props:Props) => {
-  return <RenderForm cols={`col_${props.cols || 1}`} onFormFieldChange={props.onFormFieldChange} formValue={props.formValue} config={props.config}/>
+  return <RenderForm cols={`col_${props.cols || 1}`} optionList={props.optionList} onFormFieldChange={props.onFormFieldChange} formValue={props.formValue} config={props.config}/>
 }
 export {
   deepSetObject,

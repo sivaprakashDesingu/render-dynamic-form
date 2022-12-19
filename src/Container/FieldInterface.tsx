@@ -1,4 +1,6 @@
 interface FormFieldInterface {
+    searchable?: boolean,
+    optionListPath?: any
     type:string,
     label:string,
     stateKey:string,

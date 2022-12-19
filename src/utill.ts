@@ -8,6 +8,7 @@ const deepSetObject = (stateObject: any, path: any, val: any) => {
 };
 
 const getStateValueDeep = (stateObject:any,path:any) => {
+
     const obj = {...stateObject}
     const keys = path.split(".");
     let lastKey = keys.pop();

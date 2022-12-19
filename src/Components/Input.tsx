@@ -32,9 +32,9 @@ export const Input = (props: InputInterface) => {
                 type={type === "password" ? "password" : type === "email" ? "email" : 'text'}
                 value={props.value}
                 placeholder={''}
-                onChange={(e:any) => props.handleOnChange(e.target.value)}
+                onChange={(e: any) => props.handleOnChange(e, e.target.value)}
                 readOnly={props.readOnly || false} />
-            
+
         </div>
     )
 }

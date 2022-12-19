@@ -2,6 +2,10 @@ import React from 'react'
 import { RenderDinamicForm, deepSetObject } from 'render-dynamic-form';
 import 'render-dynamic-form/dist/index.css'
 
+
+const countyList = ["India", "USA", "UK"];
+const stateList = [{ label: "TAMILNADU", value: "TN" }, { label: "ANDRA", value: "AN" }];
+
 const config = [
   {
     type: "TEXT",
@@ -24,7 +28,8 @@ const config = [
   {
     type: "Select",
     label: "Select Country",
-    stateKey: "from.country",
+    stateKey: "form.country",
+    optionListPath: 'countryList',
     rules: {
       required: true,
     }
@@ -32,7 +37,9 @@ const config = [
   {
     type: "select",
     label: "State",
-    stateKey: "from.state",
+    stateKey: "form.state",
+    optionListPath: 'stateList',
+    searchable: true,
     rules: {
       required: true,
     }
@@ -57,13 +64,25 @@ const initalState = {
 const App = () => {
   const [state, setState] = React.useState(initalState);
 
-  const onFormFieldChange = (value: any, field: any) => {
+  const onFormFieldChange = (evt: any, value: any, field: any) => {
+    evt.preventDefault();
+    //console.log(value, field)
     const localState = { ...state }
     deepSetObject(localState, field.stateKey, value);
     setState(localState)
   }
-
-  return <RenderDinamicForm cols={2} onFormFieldChange={onFormFieldChange} formValue={state} config={config} />
+  const optionList = {
+    countryList: countyList,
+    stateList: stateList
+  }
+  return (
+    <RenderDinamicForm
+      optionList={optionList}
+      cols={2}
+      onFormFieldChange={onFormFieldChange}
+      formValue={state}
+      config={config} />
+  )
 }
 
 export default App
