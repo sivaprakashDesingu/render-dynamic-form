@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Input, Select } from '../Components/index';
+import { Input, Select, CheckBox, DatePicker } from '../Components/index';
 import { FormFieldInterface } from './FieldInterface';
 import { getStateValueDeep } from './../utill';
 
@@ -24,6 +24,7 @@ export const RenderForm = (props: RenderFormProps) => {
       if (textBoxConstants.includes(fieldItem.type && fieldItem.type.toUpperCase())) {
         return (
           <Input
+            key={index}
             type={fieldItem.type.toLowerCase()}
             input_key={fieldItem.stateKey}
             label={fieldItem.label}
@@ -35,6 +36,7 @@ export const RenderForm = (props: RenderFormProps) => {
         //console.log(formFldValue)
         return (
           <Select
+            key={index}
             option={options}
             type={fieldItem.type.toLowerCase()}
             input_key={fieldItem.stateKey}
@@ -42,6 +44,16 @@ export const RenderForm = (props: RenderFormProps) => {
             value={formFldValue}
             searchable={fieldItem.searchable || false}
             handleOnChange={(evt: any, value: any) => props.onFormFieldChange(evt, value, fieldItem)} />
+        )
+      } else if (fieldItem.type && fieldItem.type.toUpperCase() === "DATETIME") {
+        return (
+          <DatePicker handleOnChange={(value: any) => console.log(value)} key={index} label='text' value={'test'} />
+        )
+      } else if (fieldItem.type && fieldItem.type.toUpperCase() === "CHECKBOX") {
+        return (
+          <div key={index} className='input-wrapper'>
+            <CheckBox label='text' checked={false} value={"test"} handleOnChange={(value: any) => console.log(value)} />
+          </div>
         )
       } else {
         return (
@@ -56,9 +68,9 @@ export const RenderForm = (props: RenderFormProps) => {
 
   return (
     <div className={`render-dinamic-form ${styles.textboxwrapper} `} >
-      <form autoComplete="new-password" className={`${props.cols} form-wrapper ${styles[props.cols]}`}>
+      <div className={`${props.cols} form-wrapper ${styles[props.cols]}`}>
         {renderFormFields()}
-      </form>
+      </div>
     </div>
   )
 }

@@ -15,7 +15,8 @@ export const Select = (props: SelectInterface) => {
     const { label, input_key, searchable, option, value } = props;
 
     const handleFocus = (event: any) => {
-        setTempvalue(event.target.id)
+        //setTempvalue(event.target.id)
+        event.preventDefault();
         setIsOpened(true);
     }
     const handleFloatLabel = (flag: boolean) => {
@@ -37,13 +38,10 @@ export const Select = (props: SelectInterface) => {
                     handleFloatLabel(false)
                 }
                 setIsOpened(false);
+            } else if (e.target && e.target.id && !isOpened && textInput && textInput.current
+                && e.target.id === textInput.current.id) {
+                setIsOpened(true);
             }
-            /*if (isOpened && textInput.current && textInput.current.contains(e.target)) {
-                if (tempvalue === null) {
-                    handleFloatLabel(false)
-                }
-                setIsOpened(false);
-            }*/
         }
 
         document.addEventListener('mousedown', handleClickOutside)
@@ -62,6 +60,7 @@ export const Select = (props: SelectInterface) => {
 
     const handleOnChange = (evt: any, value: any) => {
         setIsOpened(false);
+        setTempvalue('');
         textInput.current?.blur();
         props.handleOnChange(evt, value);
     }
@@ -111,7 +110,7 @@ export const Select = (props: SelectInterface) => {
 
     const renderOption = (_option: any, _tempvalue: any, _filterValue: any, _searchable: any) => {
         let notfound = 0;
-        //console.log(propsValue)
+        //console.log(_tempvalue)
         if (_option.length >= 1 && typeof (_option[0]) === 'object') {
 
             return _option.map((item: any, i: number) => {

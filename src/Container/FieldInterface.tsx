@@ -29,8 +29,34 @@ interface SelectInterface {
     searchable?:false | true
     option:any,
 }
+
+interface DatePickerInterface {
+    label:string,
+    value:any,
+    minValue?:any,
+    maxValue?:any,
+    handleOnChange:Function
+}
+ 
+interface DateList {
+    value:Date,
+    isDisabled:false | true
+}
+
+interface CheckBoxProps {
+    value:any ,
+    label: string,
+    checked?:boolean,
+    disabled?: false | true,
+    readOnly?: false | true,
+    handleOnChange:Function
+}
+
 export{
     FormFieldInterface,
     InputInterface,
-    SelectInterface
+    SelectInterface,
+    DatePickerInterface,
+    DateList,
+    CheckBoxProps
 }

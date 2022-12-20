@@ -44,6 +44,25 @@ const config = [
       required: true,
     }
   },
+  {
+    type:"DATETIME",
+    label: "State",
+    stateKey: "form.state",
+    optionListPath: 'stateList',
+    searchable: true,
+    rules: {
+      required: true,
+    }
+  },
+  {
+    type:"Checkbox",
+    label: "State",
+    stateKey: "form.isAsia",
+    disabled: false,
+    rules: {
+      required: true,
+    }
+  }
 ]
 
 

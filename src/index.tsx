@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { RenderForm } from './Container/RenderForm';
+import { Input, Select } from './Components/index';
 import { deepSetObject } from './utill';
 import { FormFieldInterface } from  './Container/FieldInterface';
 import './assets/styles/style.scss';
@@ -17,5 +18,7 @@ const RenderDinamicForm = (props:Props) => {
 }
 export {
   deepSetObject,
-  RenderDinamicForm
+  RenderDinamicForm,
+  Input,
+  Select
 }
