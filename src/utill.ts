@@ -50,10 +50,11 @@ function getdisabledPrevNextMonthDates(fistDate: any) {
     const nextMonthList = getAllDaysInMonth(nextYear, nextMonth,false);
     return {prevMothList,nextMonthList}
 }
- 
+const getMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 export {
     deepSetObject,
     getStateValueDeep,
     getAllDaysInMonth,
-    getdisabledPrevNextMonthDates
+    getdisabledPrevNextMonthDates,
+    getMonths
 }

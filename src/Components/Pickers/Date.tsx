@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { DatePickerInterface } from "../../Container/FieldInterface";
-import { getAllDaysInMonth } from './../../utill';
+import { getAllDaysInMonth, getMonths } from './../../utill';
 import styles from './../../styles.module.css';
 
 
@@ -19,10 +19,11 @@ export const DatePicker = (props: DatePickerInterface) => {
     useEffect(() => {
         const localState = { ...state }
         //GET CURRENT MONTH LIST
-        let list = getAllDaysInMonth(state.dateToProcessed.getFullYear(), state.dateToProcessed.getMonth(), false);
+        let list = getAllDaysInMonth(state.dateToProcessed.getFullYear(), state.dateToProcessed.getMonth(), false, state.dateToProcessed);
         //GET PREV AND CURRENT AND FILL THE DISABLED DATES
         if (list.length >= 2) {
             let filterPrevList: any = [];
+            let filternextList: any = [];
             const firstdateObj = new Date(list[0].value);
             const lasdateObj = new Date(list[list.length - 1].value);
             if (firstdateObj.getDay() !== 0) {
@@ -31,19 +32,29 @@ export const DatePicker = (props: DatePickerInterface) => {
                 const prevYear = firstdateObj.getMonth() === 0 ? firstdateObj.getFullYear() - 1 : firstdateObj.getFullYear();
                 const prevMonthList = getAllDaysInMonth(prevYear, prevmonth, true).reverse();
                 filterPrevList = prevMonthList.slice(0, prvIndCount).reverse();
-                //console.log(filterPrevList)
             }
             if (lasdateObj.getDay() !== 6) {
-                console.log(firstdateObj.getDay(), lasdateObj.getDay() - 1);
+                const nxtIndCount = 6 - lasdateObj.getDay();
+                const nextMonth = lasdateObj.getMonth() === 11 ? 0 : lasdateObj.getMonth() + 1;
+                const nextYear = lasdateObj.getMonth() === 11 ? lasdateObj.getFullYear() + 1 : lasdateObj.getFullYear();
+                const nextMonthList = getAllDaysInMonth(nextYear, nextMonth, true);
+                filternextList = nextMonthList.slice(0, nxtIndCount);
+                console.log(filternextList);
             }
 
             list = filterPrevList.concat(list);
+            list = list.concat(filternextList);
             localState.selectedMonthList = list;
             setState(localState)
         }
-    }, [])
+    }, [state.dateToProcessed])
 
 
+    function hanldeClick(day: any) {
+        const localState = { ...state }
+        localState.dateToProcessed = new Date(day.value)
+        setState(localState)
+    }
 
     const renderDays = () => {
         const listofDates = [...state.selectedMonthList];
@@ -51,14 +62,14 @@ export const DatePicker = (props: DatePickerInterface) => {
             const dayStatus = day.isDisabled ? 'disabled_days' : 'enabled_days'
             const selectedFlag = day.isSelected ? 'selected_day' : 'not_selected_day'
             return (
-                <li key={`day=${index}`} className={`week_days ${styles.week_days} ${styles[dayStatus]} ${styles[selectedFlag]}`}>{new Date(day.value).getDate()}</li>
+                <li onClick={() => hanldeClick(day)} key={`day=${index}`} className={`week_days ${styles.week_days} ${styles[dayStatus]} ${styles[selectedFlag]}`}>{new Date(day.value).getDate()}</li>
             )
         })
     }
 
 
 
-    //console.log(state)
+    console.log(state)
     return (
         <div className={`mkbys_data_picker ${styles.mkbys_data_picker}`}>
             <div className={`calendar_month ${styles.calendar_month}`}>
@@ -69,7 +80,7 @@ export const DatePicker = (props: DatePickerInterface) => {
                             {/* <img src={ChevronLeft} alt="chevron_right" /> */}
                         </span>
                     </a>
-                    <h2 className={`titular ${styles.titular}`}>APRIL 2013</h2>
+                    <h2 className={`titular ${styles.titular}`}>{getMonths[state.dateToProcessed.getMonth()].toUpperCase()} {state.dateToProcessed.getFullYear()}</h2>
                     <a className={`arrow_btn right ${styles.arrow_btn} ${styles.right}`} href="#202">
 
                         {/* <span className="material_icons icon fontawesome_angle_right"><img src={ChevronLeft} alt="chevron_right" /></span> */}
