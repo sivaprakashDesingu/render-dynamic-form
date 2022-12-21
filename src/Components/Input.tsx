@@ -6,20 +6,20 @@ import styles from './../styles.module.css';
 export const Input = (props: InputInterface) => {
 
     function renderSubClass(value: any) {
-        if (typeof value === 'string' || typeof value === 'number') {
+        if (value && typeof value === 'string' || typeof value === 'number') {
             if ((String(value)).length >= 1) {
                 return 'has_content';
             } else {
                 return ''
             }
-        } else {
+        } else if(value){
             value = value.trim();
             if (value.length >= 1) {
                 return 'has_content';
             } else {
                 return '';
             }
-        }
+        }else return ''
     }
     const type = props.type
 

@@ -67,7 +67,7 @@ export const RenderForm = (props: RenderFormProps) => {
   }
 
   return (
-    <div className={`render-dinamic-form ${styles.textboxwrapper} `} >
+    <div className={`render-dinamic-form ${styles.render_dinamic_form} `} >
       <div className={`${props.cols} form-wrapper ${styles[props.cols]}`}>
         {renderFormFields()}
       </div>
