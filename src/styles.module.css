@@ -280,6 +280,7 @@
 /*  CALENDAR STYLINGS*/
 .mkbys_data_picker_cmpt{
   width:100%;
+  position: relative;
 }
 .mkbys_data_picker {
   width: 300px;
@@ -288,7 +289,13 @@
   opacity:0;
   display:none;
 }
-
+.pickerOpend .mkbys_data_picker{
+  opacity: 1;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 67px;
+}
 .mkbys_data_picker h2.titular {
   display: block;
   font-weight: 600;
@@ -436,6 +443,10 @@
 .mkbys_data_picker .yearPanelWrp .selectedYear:hover {
   background: #d9605aec;
   color: #fafafa;
+}
+.col_2 .input_wrapper .input_wrapper{
+  min-width:100%;
+  max-width:100%;
 }
 /* DATE PICKER STYLE */
 

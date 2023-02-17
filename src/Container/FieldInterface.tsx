@@ -14,7 +14,8 @@ interface InputInterface {
     value:any,
     handleOnChange:Function,
     input_key?:string,
-    readOnly?:false|true 
+    readOnly?:false|true,
+    handleOnFocus?:Function
 }
 
 

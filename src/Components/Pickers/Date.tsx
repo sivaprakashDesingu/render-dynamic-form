@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { DatePickerInterface } from "../../Container/FieldInterface";
 import { getAllDaysInMonth, getMonths } from './../../utill';
+import { DATE_CONST } from './../../Constants';
 import { Input } from "../Input";
 import styles from './../../styles.module.css';
 
@@ -8,6 +9,7 @@ import styles from './../../styles.module.css';
 const initalState = {
     dateToProcessed: new Date(),
     isYearPanelOpened: false,
+    isDatePickerOpened: false,
     selectedMonthList: [{}]
 }
 
@@ -16,7 +18,6 @@ const initalState = {
 export const DatePicker = (props: DatePickerInterface) => {
     let { label, value } = props;
     const [state, setState] = React.useState(initalState);
-    console.log(label, value);
 
     useEffect(() => {
         const localState = { ...state }
@@ -51,12 +52,15 @@ export const DatePicker = (props: DatePickerInterface) => {
     }, [state.dateToProcessed])
 
 
-    function hanldeOnChange(dateObj: any) {
+    function hanldeOnChange(evt: any, dateObj: any) {
         if (!dateObj.isDisabled && !dateObj.isSelected) {
             const localState = { ...state }
             localState.dateToProcessed = new Date(dateObj.value);
-            setState(localState)
+            localState.isDatePickerOpened = !localState.isDatePickerOpened;
+            setState(localState);
+            props.handleOnChange(evt, new Date(dateObj.value));
         }
+
 
     }
 
@@ -67,7 +71,7 @@ export const DatePicker = (props: DatePickerInterface) => {
             const dayStatus = day.isDisabled ? 'disabled_days' : 'enabled_days'
             const selectedFlag = day.isSelected ? 'selected_day' : 'not_selected_day'
             return (
-                <li onClick={() => hanldeOnChange(day)} key={`day=${index}`} className={`week_days ${styles.week_days} ${styles[dayStatus]} ${styles[selectedFlag]}`}>{new Date(day.value).getDate()}</li>
+                <li onClick={(evt: any) => hanldeOnChange(evt, day)} key={`day=${index}`} className={`week_days ${styles.week_days} ${styles[dayStatus]} ${styles[selectedFlag]}`}>{new Date(day.value).getDate()}</li>
             )
         })
     }
@@ -127,12 +131,38 @@ export const DatePicker = (props: DatePickerInterface) => {
         setState(localState);
     }
 
+    const handleOnFocus = (evt: any) => {
+        evt.stopPropagation();
+        const localState = { ...state }
+        localState.isDatePickerOpened = !localState.isDatePickerOpened;
+        setState(localState)
+    }
 
+    const renderDateString = (dateString: any, format: string) => {
+        const dateStr = new Date(dateString);
+        const formatSpit: any[] = format.split(":");
+        //let dataValue: string = '';
+        //let monthValue: string = '';
+        //let yearValue: string = '';
+        let toBeReturned: string = '';
+        formatSpit.map((key: string) => {
+            if (key === "MM" && dateStr.getMonth())
+                toBeReturned =  toBeReturned + (toBeReturned.length === 0 ? "" : '/') + DATE_CONST[dateStr.getMonth()];
+            else if (key === "DD" && dateStr.getDate())
+                toBeReturned = toBeReturned + (toBeReturned.length === 0 ? "" : '/') + dateStr.getDate().toString();
+            else if ((key === "YYYY" || key === "YY") && dateStr.getFullYear())
+                toBeReturned = toBeReturned + (toBeReturned.length === 0 ? "" : '/') + dateStr.getFullYear().toString();
+
+        })
+        return toBeReturned;
+    }
 
     //console.log(state)
     return (
-        <div className={`mkbys_data_picker-cmpt ${styles.mkbys_data_picker_cmpt}`}>
-            <Input Placeholder="MM:DD:YYY" label="Select Date(MM:DD:YYY)" value={"text"} readOnly={false} handleOnChange={() => console.log()} />
+        <div className={`mkbys_data_picker-cmpt ${styles.input_wrapper} ${styles.mkbys_data_picker_cmpt} ${state.isDatePickerOpened ? styles.pickerOpend : styles.pickerClosed}`}>
+
+            <Input handleOnFocus={handleOnFocus} Placeholder="MM:DD:YYY" label={label} value={renderDateString(value, "MM:DD:YYYY")} readOnly={false} handleOnChange={() => console.log()} />
+
             <div className={`mkbys_data_picker ${styles.mkbys_data_picker}`}>
                 <div className={`calendar_month ${styles.calendar_month}`}>
                     <div className={`arrow_btn_container ${styles.arrow_btn_container}`}>
@@ -148,7 +178,7 @@ export const DatePicker = (props: DatePickerInterface) => {
                             {/* <span className="material_icons icon fontawesome_angle_right"><img src={ChevronLeft} alt="chevron_right" /></span> */}
                         </a>
                     </div>
-                    {!state.isYearPanelOpened ?
+                    {state.isDatePickerOpened && !state.isYearPanelOpened ?
                         <div className={`calendar_wrp ${styles.calendar_wrp}`}>
                             <ul className={`days_week ${styles.days_week}`}>
                                 <li className={`week_days ${styles.week_days}`}>sun</li>
@@ -164,7 +194,7 @@ export const DatePicker = (props: DatePickerInterface) => {
                                     {renderDays()}
 
                                 </ul>}
-                        </div> : <div className={`year_panele ${styles.yearPanelWrp}`}>
+                        </div> : state.isDatePickerOpened && <div className={`year_panele ${styles.yearPanelWrp}`}>
                             <ul className={`days_week ${styles.yearSec}`}>
                                 {renderYears(122, "-", false)}
                                 {renderYears(1, "=", true)}

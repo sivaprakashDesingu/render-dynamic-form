@@ -21,6 +21,11 @@ export const Input = (props: InputInterface) => {
             }
         }else return ''
     }
+    const handleFocus = (event:any) => {
+        if(props.handleOnFocus){
+            props.handleOnFocus(event)
+        }
+    }
     const type = props.type
 
     return (
@@ -32,6 +37,7 @@ export const Input = (props: InputInterface) => {
                 type={type === "password" ? "password" : type === "email" ? "email" : 'text'}
                 value={props.value}
                 placeholder={''}
+                onFocus={handleFocus}
                 onChange={(e: any) => props.handleOnChange(e, e.target.value)}
                 readOnly={props.readOnly || false} />
 

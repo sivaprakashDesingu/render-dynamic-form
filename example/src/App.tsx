@@ -46,9 +46,8 @@ const config = [
   },
   {
     type:"DATETIME",
-    label: "State",
-    stateKey: "form.state",
-    optionListPath: 'stateList',
+    label: "Picket Date",
+    stateKey: "form.currentTime",
     searchable: true,
     rules: {
       required: true,
@@ -77,7 +76,8 @@ const initalState = {
     KnowStack: [
       { label: "React", value: "React" },
       { label: "Angular", value: "Angular" },
-    ]
+    ],
+    currentTime:''
   }
 }
 const App = () => {
@@ -85,7 +85,7 @@ const App = () => {
 
   const onFormFieldChange = (evt: any, value: any, field: any) => {
     evt.preventDefault();
-    //console.log(value, field)
+    console.log(value, field)
     const localState = { ...state }
     deepSetObject(localState, field.stateKey, value);
     setState(localState)

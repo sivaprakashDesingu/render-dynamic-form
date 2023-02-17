@@ -47,7 +47,8 @@ export const RenderForm = (props: RenderFormProps) => {
         )
       } else if (fieldItem.type && fieldItem.type.toUpperCase() === "DATETIME") {
         return (
-          <DatePicker handleOnChange={(value: any) => console.log(value)} key={index} label='text' value={'test'} />
+          <DatePicker handleOnChange={(evt: any, value: any) => props.onFormFieldChange(evt, value, fieldItem)} key={index} label={fieldItem.label}
+            value={formFldValue} />
         )
       } else if (fieldItem.type && fieldItem.type.toUpperCase() === "CHECKBOX") {
         return (
